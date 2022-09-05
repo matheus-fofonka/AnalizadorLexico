@@ -77,6 +77,70 @@ namespace AnalizadorLexico
 
         private void bgWorkerIdentificaTextos_DoWork(object sender, DoWorkEventArgs e)
         {
+            if (itemAtual[0].ToString() + itemAtual[1].ToString() == "//")
+            {
+                Simbolo simbolo = new Simbolo()
+                {
+                    texto = itemAtual
+                };
+                Token token = new Token()
+                {
+                    Simbolo = simbolo,
+                    Tipo = TipoToken.COMENTARIO
+                };
+                tokenAtual = token;
+            }
+            uint num = 100;
+            if (!uint.TryParse(itemAtual[0].ToString(), out num))
+            {
+                switch (itemAtual)
+                {
+                    case "int":
+                        tokenAtual = new Token() { Simbolo = new Simbolo(), Tipo = TipoToken.INT };
+                        break;
+
+                    case "double":
+                        tokenAtual = new Token() { Simbolo = new Simbolo(), Tipo = TipoToken.DOUBLE };
+                        break;
+
+                    case "float":
+                        tokenAtual = new Token() { Simbolo = new Simbolo(), Tipo = TipoToken.FLOAT };
+                        break;
+
+                    case "real":
+                        tokenAtual = new Token() { Simbolo = new Simbolo(), Tipo = TipoToken.REAL };
+                        break;
+
+                    case "break":
+                        tokenAtual = new Token() { Simbolo = new Simbolo(), Tipo = TipoToken.BREAK };
+                        break;
+
+                    case "case":
+                        tokenAtual = new Token() { Simbolo = new Simbolo(), Tipo = TipoToken.CASE };
+                        break;
+
+                    case "char":
+                        tokenAtual = new Token() { Simbolo = new Simbolo(), Tipo = TipoToken.CHAR };
+                        break;
+
+                    case "const":
+                        tokenAtual = new Token() { Simbolo = new Simbolo(), Tipo = TipoToken.CONST };
+                        break;
+
+                    case "continue":
+                        tokenAtual = new Token() { Simbolo = new Simbolo(), Tipo = TipoToken.CONTINUE };
+                        break;
+
+                    default:
+                        switch (itemAtual[0])
+                        {
+
+                            default:
+                                break;
+                        }
+                        break;
+                }
+            }
         }
 
         private void bgWorkerIdentificaTextos_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -128,7 +192,7 @@ namespace AnalizadorLexico
                 case 5:
 
                     if (itemAtual[2] == '.' &&
-                   uint.TryParse(itemAtual[0].ToString()+ itemAtual[1].ToString(), out num) &&
+                   uint.TryParse(itemAtual[0].ToString() + itemAtual[1].ToString(), out num) &&
                   uint.TryParse(itemAtual[3] + itemAtual[4].ToString(), out num))
                     {
                         Simbolo simbolo = new Simbolo()
