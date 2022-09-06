@@ -29,28 +29,11 @@ namespace AnalizadorLexico
         /// </summary>
         private void InitializeComponent()
         {
-            this.txtCarrega = new System.Windows.Forms.TextBox();
-            this.btnCarregar = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
+            this.listBox = new System.Windows.Forms.ListBox();
+            this.lblResult = new System.Windows.Forms.Label();
+            this.pgBar = new System.Windows.Forms.ProgressBar();
             this.SuspendLayout();
-            // 
-            // txtCarrega
-            // 
-            this.txtCarrega.Location = new System.Drawing.Point(12, 52);
-            this.txtCarrega.Multiline = true;
-            this.txtCarrega.Name = "txtCarrega";
-            this.txtCarrega.Size = new System.Drawing.Size(125, 20);
-            this.txtCarrega.TabIndex = 0;
-            // 
-            // btnCarregar
-            // 
-            this.btnCarregar.Location = new System.Drawing.Point(143, 49);
-            this.btnCarregar.Name = "btnCarregar";
-            this.btnCarregar.Size = new System.Drawing.Size(75, 25);
-            this.btnCarregar.TabIndex = 1;
-            this.btnCarregar.Text = "Carregar";
-            this.btnCarregar.UseVisualStyleBackColor = true;
-            this.btnCarregar.Click += new System.EventHandler(this.btnCarregar_Click);
             // 
             // label1
             // 
@@ -63,14 +46,48 @@ namespace AnalizadorLexico
             this.label1.TabIndex = 2;
             this.label1.Text = "Analizador Léxico";
             // 
+            // listBox
+            // 
+            this.listBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.listBox.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.listBox.FormattingEnabled = true;
+            this.listBox.Location = new System.Drawing.Point(12, 48);
+            this.listBox.Name = "listBox";
+            this.listBox.Size = new System.Drawing.Size(273, 537);
+            this.listBox.TabIndex = 3;
+            // 
+            // lblResult
+            // 
+            this.lblResult.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblResult.Location = new System.Drawing.Point(291, 48);
+            this.lblResult.Name = "lblResult";
+            this.lblResult.Size = new System.Drawing.Size(323, 532);
+            this.lblResult.TabIndex = 4;
+            // 
+            // pgBar
+            // 
+            this.pgBar.Location = new System.Drawing.Point(-11, 583);
+            this.pgBar.MarqueeAnimationSpeed = 5;
+            this.pgBar.Name = "pgBar";
+            this.pgBar.Size = new System.Drawing.Size(643, 10);
+            this.pgBar.Step = 25;
+            this.pgBar.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
+            this.pgBar.TabIndex = 5;
+            this.pgBar.Visible = false;
+            // 
             // FormPrincipal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(784, 561);
+            this.ClientSize = new System.Drawing.Size(626, 589);
+            this.Controls.Add(this.pgBar);
+            this.Controls.Add(this.lblResult);
+            this.Controls.Add(this.listBox);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.btnCarregar);
-            this.Controls.Add(this.txtCarrega);
             this.DoubleBuffered = true;
             this.Name = "FormPrincipal";
             this.ShowIcon = false;
@@ -82,10 +99,10 @@ namespace AnalizadorLexico
         }
 
         #endregion
-
-        private System.Windows.Forms.TextBox txtCarrega;
-        private System.Windows.Forms.Button btnCarregar;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ListBox listBox;
+        private System.Windows.Forms.Label lblResult;
+        private System.Windows.Forms.ProgressBar pgBar;
     }
 }
 

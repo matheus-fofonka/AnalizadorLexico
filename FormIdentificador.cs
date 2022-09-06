@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -46,28 +47,31 @@ namespace AnalizadorLexico
                     {
                         tokenAtual = new Token()
                         {
-                            Simbolo = new Simbolo() { texto = linha.ToString() },
+                            Simbolo = new Simbolo() { texto = item },
                             Tipo = TipoToken.ERRO
                         };
                     }
                 }
+                tokenAtual.Linha = linha;
 
-                if (tokenAtual.Tipo != TipoToken.ERRO)
+                if (tokenAtual.Tipo != TipoToken.ERRO && tokenAtual.Tipo != TipoToken.COMENTARIO)
                 {
                     if (tokenAtual.Tipo == TipoToken.IDENTIFICADOR)
                     {
-                        if (!ListaSimbolos.Contains(tokenAtual.Simbolo))
+                        if (!ListaSimbolos.Exists(x => x.texto == tokenAtual.Simbolo.texto))
                             ListaSimbolos.Add(tokenAtual.Simbolo);
+                        else
+                            tokenAtual.Simbolo = ListaSimbolos.FirstOrDefault(x => x.texto == tokenAtual.Simbolo.texto);
                     }
-                    else
+                    else if (tokenAtual.Simbolo != null && tokenAtual.Simbolo.texto != null)
                         ListaSimbolos.Add(tokenAtual.Simbolo);
 
                     ListaTokens.Add(tokenAtual);
                 }
+                else if (tokenAtual.Tipo == TipoToken.COMENTARIO)
+                    ListaTokens.Add(tokenAtual);
                 else
-                {
                     ListaErros.Add(tokenAtual);
-                }
 
                 linha++;
             }
@@ -77,7 +81,7 @@ namespace AnalizadorLexico
 
         private void bgWorkerIdentificaTextos_DoWork(object sender, DoWorkEventArgs e)
         {
-            if (itemAtual[0].ToString() + itemAtual[1].ToString() == "//")
+            if (itemAtual.Length >= 2 && itemAtual[0].ToString() + itemAtual[1].ToString() == "//")
             {
                 Simbolo simbolo = new Simbolo()
                 {
@@ -89,56 +93,72 @@ namespace AnalizadorLexico
                     Tipo = TipoToken.COMENTARIO
                 };
                 tokenAtual = token;
+                return;
             }
             uint num = 100;
             if (!uint.TryParse(itemAtual[0].ToString(), out num))
             {
+                //SWITCH RESERVADAS
                 switch (itemAtual)
                 {
                     case "int":
-                        tokenAtual = new Token() { Simbolo = new Simbolo(), Tipo = TipoToken.INT };
+                        tokenAtual = new Token() { Simbolo = new Simbolo(), Tipo = TipoToken.INT }; return;
                         break;
 
                     case "double":
-                        tokenAtual = new Token() { Simbolo = new Simbolo(), Tipo = TipoToken.DOUBLE };
+                        tokenAtual = new Token() { Simbolo = new Simbolo(), Tipo = TipoToken.DOUBLE }; return;
                         break;
 
                     case "float":
-                        tokenAtual = new Token() { Simbolo = new Simbolo(), Tipo = TipoToken.FLOAT };
+                        tokenAtual = new Token() { Simbolo = new Simbolo(), Tipo = TipoToken.FLOAT }; return;
                         break;
 
                     case "real":
-                        tokenAtual = new Token() { Simbolo = new Simbolo(), Tipo = TipoToken.REAL };
+                        tokenAtual = new Token() { Simbolo = new Simbolo(), Tipo = TipoToken.REAL }; return;
                         break;
 
                     case "break":
-                        tokenAtual = new Token() { Simbolo = new Simbolo(), Tipo = TipoToken.BREAK };
+                        tokenAtual = new Token() { Simbolo = new Simbolo(), Tipo = TipoToken.BREAK }; return;
                         break;
 
                     case "case":
-                        tokenAtual = new Token() { Simbolo = new Simbolo(), Tipo = TipoToken.CASE };
+                        tokenAtual = new Token() { Simbolo = new Simbolo(), Tipo = TipoToken.CASE }; return;
                         break;
 
                     case "char":
-                        tokenAtual = new Token() { Simbolo = new Simbolo(), Tipo = TipoToken.CHAR };
+                        tokenAtual = new Token() { Simbolo = new Simbolo(), Tipo = TipoToken.CHAR }; return;
                         break;
 
                     case "const":
-                        tokenAtual = new Token() { Simbolo = new Simbolo(), Tipo = TipoToken.CONST };
+                        tokenAtual = new Token() { Simbolo = new Simbolo(), Tipo = TipoToken.CONST }; return;
                         break;
 
                     case "continue":
-                        tokenAtual = new Token() { Simbolo = new Simbolo(), Tipo = TipoToken.CONTINUE };
+                        tokenAtual = new Token() { Simbolo = new Simbolo(), Tipo = TipoToken.CONTINUE }; return;
                         break;
+                }
 
-                    default:
-                        switch (itemAtual[0])
-                        {
+                bool valido = true;
+                Alfabeto alfabeto = new Alfabeto();
+                foreach (var item in itemAtual)
+                {
+                    if (!(alfabeto.Letras.Contains(item) || alfabeto.Numeros.Contains(item)))
+                        valido = false;
+                }
 
-                            default:
-                                break;
-                        }
-                        break;
+                if (valido)
+                {
+                    Simbolo simbolo = new Simbolo()
+                    {
+                        texto = itemAtual
+                    };
+                    Token token = new Token()
+                    {
+                        Simbolo = simbolo,
+                        Tipo = TipoToken.IDENTIFICADOR
+                    };
+                    tokenAtual = token;
+                    return;
                 }
             }
         }
